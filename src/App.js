@@ -33,8 +33,6 @@ componentDidMount(){
            id: snapshot.id,
            ...snapshot.data()
          }
-       }, () => {
-        console.log(this.state);
        })
       });
 
