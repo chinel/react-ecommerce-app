@@ -1,71 +1,60 @@
-import React, {Component} from 'react';
-import './App.css';
-import { Route, Switch } from 'react-router-dom';
-import HomePage from './pages/homepage/homepage.component';
-import ShopPage from './pages/shopPage/shop.component';
-import Header from './components/header/header.component';
-import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-
-
-
-
+import React, { Component } from "react";
+import "./App.css";
+import { Route, Switch } from "react-router-dom";
+import HomePage from "./pages/homepage/homepage.component";
+import ShopPage from "./pages/shopPage/shop.component";
+import Header from "./components/header/header.component";
+import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { connect } from "react-redux";
+import { setCurrentUser } from "./redux/user/user.actions";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentUser: null
-    }
+  
+
+  unsubscribeFromAuth = null;
+
+  componentDidMount() {
+    const { setCurrentUser } = this.props;
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapshot => {
+          setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data()
+          });
+        });
+      } else {
+        setCurrentUser(userAuth);
+      }
+    });
   }
 
+  //this will help to close the open firebase auth whenever the component is to be unmounted
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
 
-unsubscribeFromAuth = null;  
-
-componentDidMount(){
-  this.unsubscribeFromAuth =  auth.onAuthStateChanged( async userAuth => {
-    if(userAuth){
-      const userRef = await createUserProfileDocument(userAuth);
-
-      userRef.onSnapshot(snapshot => {
-       this.setState({
-         currentUser:{
-           id: snapshot.id,
-           ...snapshot.data()
-         }
-       })
-      });
-
-      
-
-    }else{
-      this.setState({currentUser: userAuth})
-    }
-  })
+  render() {
+    return (
+      <div>
+        <Header />{" "}
+        {/*Putting the header menu before the switch makes the header visible no matter what page we want to show */}
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/signin" component={SignInAndSignUpPage} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
-//this will help to close the open firebase auth whenever the component is to be unmounted
-componentWillUnmount(){
-this.unsubscribeFromAuth();
-}
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
 
-
-
-
-
-  render (){
-  return (
-    <div>
-      <Header currentUser={this.state.currentUser}/> {/*Putting the header menu before the switch makes the header visible no matter what page we want to show */}
-      <Switch>
-      <Route exact path="/" component={HomePage}/>
-      <Route exact path="/shop" component={ShopPage}/>
-      <Route exact path="/signin" component={SignInAndSignUpPage}/>
-      </Switch>
-      
-    </div>
-  );
-}
-
-}
-export default App;
+//here the App component does not need the mapStateToProps,which gives us access to the current user from the root reducer, so we set it to null
+export default connect(null, mapDispatchToProps)(App);
