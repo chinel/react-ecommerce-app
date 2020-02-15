@@ -6,6 +6,7 @@ import {ReactComponent as ShoppingIcon} from '../../assets/11.2 shopping-bag.svg
 import "./cart-icon.styles.scss";
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
 import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
+import { createStructuredSelector } from 'reselect';
 
 //We are destructuring toggleCartHidden off our properties
 const CartIcon = ({toggleCartHidden, itemCount}) => (
@@ -22,9 +23,9 @@ const mapDispatchToProps = (dispatch) => ({
     toggleCartHidden: () => dispatch(toggleCartHidden())
 })
 
-const mapStateToProps = (state/*{cart:{cartItems}}*/) => ({
+const mapStateToProps = createStructuredSelector({
     //Note: reduce javascript function allows us to reduce an array to a single value and here we also want to accumulate all the quantity values in the cart items array
-    itemCount: selectCartItemsCount(state) //cartItems.reduce((accumulatedQuantity, cartItem) => accumulatedQuantity + cartItem.quantity, 0) //here we passed in 0 as the initial accumulated value
+    itemCount: selectCartItemsCount //cartItems.reduce((accumulatedQuantity, cartItem) => accumulatedQuantity + cartItem.quantity, 0) //here we passed in 0 as the initial accumulated value
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
