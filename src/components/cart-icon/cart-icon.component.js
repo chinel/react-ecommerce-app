@@ -23,11 +23,8 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const mapStateToProps = (state/*{cart:{cartItems}}*/) => ({
-    
-    
     //Note: reduce javascript function allows us to reduce an array to a single value and here we also want to accumulate all the quantity values in the cart items array
     itemCount: selectCartItemsCount(state) //cartItems.reduce((accumulatedQuantity, cartItem) => accumulatedQuantity + cartItem.quantity, 0) //here we passed in 0 as the initial accumulated value
-    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartIcon);
