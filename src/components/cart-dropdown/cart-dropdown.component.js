@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 
 import CustomButton from '../custom-button/custom-button.component';
 import CartItem from '../cart-items/cart-items.component';
-import { selectCartItems } from '../cart-icon/cart-icon.selectors';
+import { selectCartItems } from '../../redux/cart/cart.selectors';
 
 const CartDropdown = ({ cartItems}) => (
     <div className="cart-dropdown">

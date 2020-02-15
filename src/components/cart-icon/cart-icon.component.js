@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {ReactComponent as ShoppingIcon} from '../../assets/11.2 shopping-bag.svg';
 import "./cart-icon.styles.scss";
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
-import { selectCartItemsCount } from './cart-icon.selectors';
+import { selectCartItemsCount } from '../../redux/cart/cart.selectors';
 
 //We are destructuring toggleCartHidden off our properties
 const CartIcon = ({toggleCartHidden, itemCount}) => (
