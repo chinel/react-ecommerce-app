@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.actions";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
+import CheckoutPage from "./pages/checkout/checkout.component";
 
 class App extends Component {
   
@@ -46,8 +47,9 @@ class App extends Component {
         {/*Putting the header menu before the switch makes the header visible no matter what page we want to show */}
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/shop" component={ShopPage} />
+          <Route  path="/shop" component={ShopPage} />
           <Route exact path="/signin" render={() => this.props.currentUser ? <Redirect to="/"/> : <SignInAndSignUpPage/>} />
+           <Route exact path="/checkout" component={CheckoutPage}/>
         </Switch>
       </div>
     );
