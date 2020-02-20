@@ -17,6 +17,11 @@ export const selectCollections = createSelector(
     (shop) => shop.collections
 )
 
+export const selectCollectionForPreview = createSelector(
+    [selectCollections],
+    (collections) => Object.keys(collections).map(key => collections[key])//this will help us convert our collections object to an array of collection items
+)
+
 export const selectCollection = collectionUrlParam => createSelector(
     [selectCollections],
     (collections) => collections[collectionUrlParam]
