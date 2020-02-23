@@ -41,6 +41,12 @@ const config = {
 
   }
 
+export const addCollectionAndDocuments = (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  console.log(collectionRef);
+}
+
+
   //setting up google authentication
 const provider =  new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({prompt: 'select_account'});
