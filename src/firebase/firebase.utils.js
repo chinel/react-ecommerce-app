@@ -41,9 +41,22 @@ const config = {
 
   }
 
-export const addCollectionAndDocuments = (collectionKey, objectsToAdd) => {
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
   const collectionRef = firestore.collection(collectionKey);
   console.log(collectionRef);
+
+  //here because want to prevent a situation where while looping through the array and setting the data in firestore
+  //And lets say for instance something happens like loss of internet connectivity and the creation of the data from the array stops have way.
+  //We would be using a firebase batch to do the writing of the data
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc(); //this will enable us to generate a unique key for each document
+    batch.set(newDocRef, obj);
+  });
+
+  return  await batch.commit(); //batch.commit() returns a promise if the commit is successful then it resolves to a void
+
+
 }
 
 
