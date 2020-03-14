@@ -24,3 +24,8 @@ export const selectCollection = collectionUrlParam => createSelector(
      [selectShop],
      shop =>  shop.isFetching
  )
+
+ export const selectIsCollectionLoaded = createSelector(
+     [selectShop],
+     shop => !!shop.collections
+ )
