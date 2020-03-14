@@ -2,9 +2,10 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import rootReducer from './root-reducer';
 import {  persistStore } from 'redux-persist';
+import thunk  from 'redux-thunk';
 
 
-const middlewares = [];
+const middlewares = [thunk];
 
 //here using node env we would used this to only apply the redux middleware logger only on developement environment
 if(process.env.NODE_ENV === 'development'){
