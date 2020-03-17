@@ -2,10 +2,12 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 import rootReducer from './root-reducer';
 import {  persistStore } from 'redux-persist';
-import thunk  from 'redux-thunk';
+/* import thunk  from 'redux-thunk'; */
+import createSagaMiddleware from 'redux-saga';
 
+const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [thunk];
+const middlewares = [/* thunk */sagaMiddleware];
 
 //here using node env we would used this to only apply the redux middleware logger only on developement environment
 if(process.env.NODE_ENV === 'development'){
