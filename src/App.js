@@ -20,7 +20,7 @@ class App extends Component {
 
   componentDidMount() {
     const { setCurrentUser, /* collectionArray */ } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    /* this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
@@ -31,10 +31,10 @@ class App extends Component {
           });
         });
       } else {
-        /* addCollectionAndDocuments('collections', collectionArray.map(({title, items}) => ({title, items})) ) this was added to enable us to feed the shop data array into firestore one time */
+        // addCollectionAndDocuments('collections', collectionArray.map(({title, items}) => ({title, items})) ) this was added to enable us to feed the shop data array into firestore one time 
         setCurrentUser(userAuth);
       }
-    });
+    }); */
   }
 
   //this will help to close the open firebase auth whenever the component is to be unmounted
