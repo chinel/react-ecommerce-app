@@ -1,7 +1,7 @@
 import {  takeLatest, put, call,all} from 'redux-saga/effects';
 import  userActionTypes  from "./user.types";
 import { auth,googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils';
-import {  SignInSuccess, SignInError} from './user.actions';
+import {  SignInSuccess, SignInError, signOutError, signOutSuccess} from './user.actions';
 
 
 export function* getSnapshotFromUserAuth(userAuth){
@@ -41,6 +41,15 @@ try {
 }
 }
 
+export function* signOut() {
+try {
+    yield auth.signOut();
+    yield put(signOutSuccess());
+} catch (error) {
+    yield put(signOutError(error.message));
+}
+}
+
 export function* googleSignInStart() {
     yield takeLatest(userActionTypes.GOOGLE_SIGN_IN_START,signInWithGoogle);
 }
@@ -53,10 +62,15 @@ export function* checkUserSession (){
     yield takeLatest(userActionTypes.CHECK_USER_SESSION,isUserAuthenticated);
 }
 
+export function* onSignOutStart (){
+    yield takeLatest(userActionTypes.SIGN_OUT_START,signOut);
+}
+
 //here we created a single saga function to call out other saga functions so we do just have one call in the root saga file
 export function* userSagas(){
  yield all([call(googleSignInStart),
     call(emailSignInStart),
-    call(isUserAuthenticated)   
+    call(checkUserSession), 
+    call(onSignOutStart)  
   ])
 }
