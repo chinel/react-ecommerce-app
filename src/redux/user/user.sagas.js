@@ -31,6 +31,10 @@ export function* signInWithEmail({payload:{email, password}}){
     }
 }
 
+export  function* isUserAuthenticated(){
+
+}
+
 export function* googleSignInStart() {
     yield takeLatest(userActionTypes.GOOGLE_SIGN_IN_START,signInWithGoogle);
 }
@@ -39,9 +43,14 @@ export function* emailSignInStart() {
     yield takeLatest(userActionTypes.EMAIL_SIGN_IN_START,signInWithEmail);
 }
 
+export function* checkUserSession (){
+    yield takeLatest(userActionTypes.CHECK_USER_SESSION,isUserAuthenticated);
+}
+
 //here we created a single saga function to call out other saga functions so we do just have one call in the root saga file
 export function* userSagas(){
  yield all([call(googleSignInStart),
-    call(emailSignInStart)    
+    call(emailSignInStart),
+    call(isUserAuthenticated)   
   ])
 }

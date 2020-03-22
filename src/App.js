@@ -11,6 +11,7 @@ import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCollectionForPreview } from './redux/shop/shop.selectors';
+import { checkUserSession } from './redux/user/user.actions';
 
 class App extends Component {
   
@@ -18,6 +19,8 @@ class App extends Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const {checkUserSession} = this.props;
+    checkUserSession();
    // const { setCurrentUser, /* collectionArray */ } = this.props;
     /* this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -64,7 +67,9 @@ const mapStateToProps = createStructuredSelector ({
   collectionArray: selectCollectionForPreview
 })
 
-
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession())
+})
 
 //If the App component does not need the mapStateToProps,which gives us access to the current user from the root reducer, so we set it to null
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
