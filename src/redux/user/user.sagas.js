@@ -1,11 +1,11 @@
 import {  takeLatest, put, call,all} from 'redux-saga/effects';
 import  userActionTypes  from "./user.types";
 import { auth,googleProvider, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils';
-import {  SignInSuccess, SignInError, signOutError, signOutSuccess} from './user.actions';
+import {  SignInSuccess, SignInError, signOutError, signOutSuccess, signUpError, signUpSuccess} from './user.actions';
 
 
-export function* getSnapshotFromUserAuth(userAuth){
-    const userRef = yield call(createUserProfileDocument, userAuth);
+export function* getSnapshotFromUserAuth(userAuth, additionalData){
+    const userRef = yield call(createUserProfileDocument, userAuth, additionalData);
     const userSnapshot = yield userRef.get(); 
     yield put(SignInSuccess({
         id: userSnapshot.id,
@@ -50,6 +50,23 @@ try {
 }
 }
 
+export function* signUp({payload:{email, password, displayName}}){
+    try {
+        const { user } = yield auth.createUserWithEmailAndPassword(
+            email,
+            password
+          );
+          yield put(signUpSuccess({user, additionalData:{displayName}}))
+    } catch (error) {
+        yield put(signUpError(error.message))
+    }
+}
+
+export function* signInAfterSignUp({payload:{user, additionalData}}){
+  yield  getSnapshotFromUserAuth(user, additionalData);
+}
+
+
 export function* googleSignInStart() {
     yield takeLatest(userActionTypes.GOOGLE_SIGN_IN_START,signInWithGoogle);
 }
@@ -66,11 +83,21 @@ export function* onSignOutStart (){
     yield takeLatest(userActionTypes.SIGN_OUT_START,signOut);
 }
 
+export function* onSignUpStart (){
+    yield takeLatest(userActionTypes.SIGN_UP_START,signUp);
+}
+
+export function* onSignUpSuccess(){
+    yield takeLatest(userActionTypes.SIGN_UP_SUCCESS, signInAfterSignUp);
+}
+
 //here we created a single saga function to call out other saga functions so we do just have one call in the root saga file
 export function* userSagas(){
  yield all([call(googleSignInStart),
     call(emailSignInStart),
     call(checkUserSession), 
-    call(onSignOutStart)  
+    call(onSignOutStart),
+    call(onSignUpStart),
+    call(onSignUpSuccess)
   ])
 }
