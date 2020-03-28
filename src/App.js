@@ -40,10 +40,10 @@ class App extends Component {
   }
 
   //this will help to close the open firebase auth whenever the component is to be unmounted
-  componentWillUnmount() {
+ /*  componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
-
+ */
   render() {
     return (
       <div>
