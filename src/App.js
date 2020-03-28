@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import "./App.css";
 import { Route, Switch, Redirect} from "react-router-dom";
 import HomePage from "./pages/homepage/homepage.component";
@@ -13,14 +13,15 @@ import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCollectionForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from './redux/user/user.actions';
 
-class App extends Component {
-  
-
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const {checkUserSession} = this.props;
+const App = ({checkUserSession, currentUser}) => {
+  useEffect(() => {
     checkUserSession();
+  }, [checkUserSession])
+
+
+  // componentDidMount() {
+  //   const {checkUserSession} = this.props;
+  //   checkUserSession();
    // const { setCurrentUser, /* collectionArray */ } = this.props;
     /* this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -37,14 +38,14 @@ class App extends Component {
         setCurrentUser(userAuth);
       }
     }); */
-  }
+ // }
 
   //this will help to close the open firebase auth whenever the component is to be unmounted
  /*  componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
  */
-  render() {
+
     return (
       <div>
         <Header />{" "}
@@ -52,13 +53,13 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route  path="/shop" component={ShopPage} />
-          <Route exact path="/signin" render={() => this.props.currentUser ? <Redirect to="/"/> : <SignInAndSignUpPage/>} />
+          <Route exact path="/signin" render={() => currentUser ? <Redirect to="/"/> : <SignInAndSignUpPage/>} />
            <Route exact path="/checkout" component={CheckoutPage}/>
         </Switch>
       </div>
     );
   }
-}
+
 
 
 //Here we destructured our user off the state
