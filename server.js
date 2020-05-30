@@ -6,6 +6,8 @@ const path = require('path'); // this allows us to implement pathing in our proj
 
 if(process.env.NODE_ENV !== 'production') require('dotenv').config();
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);//using the require function to import the stripe library returns a function that expects the first parameter to be the stripe api secret key// using the process.env.STRIPE_SECRET KEY is possible because of the line above where we had to require the dotenv
+
 const app = express();// this instantiates for us a new express application remember that express is just a library that allows us to build an API server easily
 const port = process.env.PORT || 5000; // our server will be using a different port than our localhost which is using port 3000
 
@@ -26,3 +28,23 @@ app.listen(port, error => {
     if (error) throw error;
     console.log('Server running on port ' + port);
 })
+
+
+app.post('/payment', (req, res) => {
+    const body = {
+        source: req.body.token.id,
+        amount: req.body.amount,
+        currency: 'usd'
+    };
+
+    //this section creates our stripe charge using the parameters sent from the request and then it returns a status and message whether success or error
+    stripe.charges.create(body, (stripeErr, stripeRes) => {
+    if(stripeErr){
+        res.status(500).send({error: stripeErr});
+    }else{
+        res.status(200).send({success: stripeRes});
+    }
+    })
+
+
+});
