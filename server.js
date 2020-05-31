@@ -17,7 +17,7 @@ app.use(bodyparser.urlencoded({extended: true})); // this makes sure that what e
 app.use(cors());//
 
 if (process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.json(__dirname, 'client/build')));  // express.static middleware function allows us to serve a certain file located in a particular directory we used path to help us get the exact path of the directory which is client/build where all the static build files are located
+    app.use(express.static(path.join(__dirname, 'client/build')));  // express.static middleware function allows us to serve a certain file located in a particular directory we used path to help us get the exact path of the directory which is client/build where all the static build files are located
 
     app.get('*', function (req, res) {     // using the app.get we are able to serve the static file requested based on the url, it is more of like routing
        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
