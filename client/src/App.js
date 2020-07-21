@@ -1,5 +1,4 @@
 import React, { Component, useEffect } from "react";
-import "./App.css";
 import { Route, Switch, Redirect} from "react-router-dom";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shopPage/shop.component";
@@ -12,6 +11,7 @@ import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkout.component";
 import { selectCollectionForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from './redux/user/user.actions';
+import {GlobalStyle} from "./global.styles";
 
 const App = ({checkUserSession, currentUser}) => {
   useEffect(() => {
@@ -48,6 +48,7 @@ const App = ({checkUserSession, currentUser}) => {
 
     return (
       <div>
+          <GlobalStyle/>
         <Header />{" "}
         {/*Putting the header menu before the switch makes the header visible no matter what page we want to show */}
         <Switch>
