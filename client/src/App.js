@@ -9,6 +9,7 @@ import { selectCollectionForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from './redux/user/user.actions';
 import {GlobalStyle} from "./global.styles";
 import Spinner from "./components/spinner/spinner.component";
+import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const ShopPage = lazy(() => import('./pages/shopPage/shop.component'));
@@ -55,13 +56,14 @@ const App = ({checkUserSession, currentUser}) => {
         <Header />{" "}
         {/*Putting the header menu before the switch makes the header visible no matter what page we want to show */}
         <Switch>
+            <ErrorBoundary>
            <Suspense fallback={<Spinner/>}>
           <Route exact path="/" component={HomePage} />
                <Route  path="/shop" component={ShopPage} />
                <Route exact path="/signin" render={() => currentUser ? <Redirect to="/"/> : <SignInAndSignUpPage/>} />
                <Route exact path="/checkout" component={CheckoutPage}/>
            </Suspense>
-
+            </ErrorBoundary>
         </Switch>
       </div>
     );
