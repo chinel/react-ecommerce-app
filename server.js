@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 const path = require('path'); // this allows us to implement pathing in our project
 const compression = require('compression');
+const enforce = require('express-sslify');
 
 
 if(process.env.NODE_ENV !== 'production') require('dotenv').config();
@@ -17,6 +18,7 @@ app.use(bodyparser.json()); // this automatically handles converting the data we
 app.use(bodyparser.urlencoded({extended: true})); // this makes sure that what ever parameter values we pass to our url is url friendly
 
 app.use(cors());//
+app.use(enforce.HTTPS({trustProtoHeader: true}));
 
 if (process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname, 'client/build')));  // express.static middleware function allows us to serve a certain file located in a particular directory we used path to help us get the exact path of the directory which is client/build where all the static build files are located
