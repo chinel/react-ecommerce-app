@@ -1,8 +1,8 @@
 # React Ecommerce App
 
-### [Live Site](https://happy-bhabha-676a03.netlify.app)
+### [Live Site](https://crwn-ecommerce-app.herokuapp.com)
 
-![React Pomodoro App](https://i.imgur.com/2bIfY43.png)
+![React Ecommerce App](https://i.imgur.com/DlNU332.png)
 
 ## Introduction
 
