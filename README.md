@@ -19,4 +19,6 @@ This application is a react ecommerce application built with React js
 - Redux Saga - A scalable way for us to handle asynchronous actions
 - React Hooks
 - Context Api
+- Reselect
+- Redux Persist
 - PWA
