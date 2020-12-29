@@ -22,3 +22,7 @@ This application is a react ecommerce application built with React js
 - Reselect
 - Redux Persist
 - PWA
+
+### How to run the application on your localhost
+
+Clone the repository to your localhost and run the command **npm run dev**. The application has both the client and server of the app. Running the command npm run dev starts both the client and server side of the application
